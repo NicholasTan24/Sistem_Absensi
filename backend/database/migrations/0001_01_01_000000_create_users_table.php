@@ -11,14 +11,49 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
+        Schema::create('karyawan', function (Blueprint $table) {
+            $table->string('id_karyawan')->primary();
             $table->string('password');
-            $table->rememberToken();
+            $table->string('nama_karyawan');
+            $table->string('nomor_telepon')->nullable();
+            $table->string('email')->unique();
+            $table->string('jabatan');
+            $table->enum('status',['aktif','tidak aktif']);
             $table->timestamps();
+        });
+
+        Schema::create('qr_code', function (Blueprint $table) {
+            $table->string('kode_qr')->primary();
+            $table->date('tanggal');
+            $table->datetime('waktu_habis');
+        });
+
+        Schema::create('admin', function (Blueprint $table) {
+            $table->string('id_admin')->primary();
+            $table->string('password');
+        });
+
+        Schema::create('kehadiran', function (Blueprint $table) {
+
+            $table->string('id_karyawan');
+            $table->string('kode_qr');
+            $table->date('tanggal');
+            $table->datetime('jam_masuk')->nullable();
+            $table->datetime('jam_pulang')->nullable();
+            $table->foreign('id_karyawan')->references('id_karyawan')->on('karyawan');
+            $table->foreign('kode_qr')->references('kode_qr')->on('qr_code');
+        });
+
+        Schema::create('history', function (Blueprint $table) {
+            $table->increments('no_history')-> primary();
+            $table->string('id_karyawan');
+            $table->date('periode_awal');
+            $table->date('periode_akhir');
+            $table->integer('total_hadir');
+            $table->integer('total_terlambat');
+            $table->integer('total_izin');
+            $table->integer('total_alpha');
+            $table->foreign('id_karyawan')->references('id_karyawan')->on('karyawan');
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
@@ -27,14 +62,7 @@ return new class extends Migration
             $table->timestamp('created_at')->nullable();
         });
 
-        Schema::create('sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
-        });
+        
     }
 
     /**
@@ -42,8 +70,12 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
         Schema::dropIfExists('password_reset_tokens');
-        Schema::dropIfExists('sessions');
+        Schema::dropIfExists('history');
+        Schema::dropIfExists('kehadiran');
+        Schema::dropIfExists('admin');
+        Schema::dropIfExists('qr_code');
+        Schema::dropIfExists('karyawan');
     }
+
 };
