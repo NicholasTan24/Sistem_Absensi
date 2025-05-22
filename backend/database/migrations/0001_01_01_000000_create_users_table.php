@@ -34,7 +34,7 @@ return new class extends Migration
         });
 
         Schema::create('kehadiran', function (Blueprint $table) {
-
+            $table->increments('no_kehadiran')->primary();
             $table->string('id_karyawan');
             $table->string('kode_qr');
             $table->date('tanggal');

@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:frontend/Tampilan/Dashboard.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
+    initialRoute: '/',
+    routes: {
+      '/': (context) => Dashboard(),
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
