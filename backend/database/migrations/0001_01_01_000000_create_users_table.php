@@ -11,16 +11,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('karyawan', function (Blueprint $table) {
-            $table->string('id_karyawan')->primary();
-            $table->string('password');
-            $table->string('nama_karyawan');
-            $table->string('nomor_telepon')->nullable();
-            $table->string('email')->unique();
-            $table->string('jabatan');
-            $table->enum('status',['aktif','tidak aktif']);
-            $table->timestamps();
-        });
 
         Schema::create('qr_code', function (Blueprint $table) {
             $table->string('kode_qr')->primary();
