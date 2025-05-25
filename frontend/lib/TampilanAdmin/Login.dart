@@ -4,7 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
-  const Login({super.key});
+  Login({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -15,6 +15,7 @@ class Login extends StatelessWidget {
             width: 300,
             height: 400,
             child: Card(
+              elevation: 10,
               child: Column(
                   children: [
               Padding(
