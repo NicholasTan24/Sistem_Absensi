@@ -5,19 +5,7 @@ class MyDrawerRekap extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(80),
-        child: AppBar(
-          backgroundColor: Color(0xffffa44f),
-          title: Padding(
-            padding: EdgeInsets.only(top: 20),
-            child: Text('Rekap Absensi',
-                style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold)),
-          ),
-        ),
-      ),
-      drawer: Drawer(
+    return Drawer(
         child: Container(
           color: Colors.redAccent,
           child: ListView(padding: EdgeInsets.zero, children: <Widget>[
@@ -96,7 +84,6 @@ class MyDrawerRekap extends StatelessWidget {
             ),
           ]),
         ),
-      ),
     );
   }
 }

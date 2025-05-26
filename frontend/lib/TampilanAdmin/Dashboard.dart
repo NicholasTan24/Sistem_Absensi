@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Card/Keterangan.dart';
+import 'package:frontend/Card/TabelAbsensi.dart';
 import '../Drawer/Mydrawer.dart';
 
 class Dashboard extends StatefulWidget {
@@ -30,56 +31,59 @@ class _DashboardState extends State<Dashboard> {
         ),
       ),
       drawer: MyDrawer(),
-      body: Column(
-        children: [
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 25, horizontal: 70),
-            child: Row(children: [
-              Text(
-                'Ringkasan Absensi',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              ),
-            ]),
-          ),
-          CardKehadiran(),
-          SizedBox(height: 30),
-          Padding(
-            padding: EdgeInsets.symmetric(vertical: 25, horizontal: 70),
-            child: Row(children: [
-              Text(
-                'Riwayat Absensi',
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-              ),
-              Spacer(),
-              Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Colors.deepOrange),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'Kehadiran Hari ini',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 25, horizontal: 70),
+              child: Row(children: [
+                Text(
+                  'Ringkasan Absensi',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                ),
+              ]),
+            ),
+            CardKehadiran(),
+            SizedBox(height: 30),
+            Padding(
+              padding: EdgeInsets.symmetric(vertical: 25, horizontal: 70),
+              child: Row(children: [
+                Text(
+                  'Riwayat Absensi',
+                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                ),
+                Spacer(),
+                Container(
+                    padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.deepOrange),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'Kehadiran Hari ini',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 4),
-                      // Text(
-                      //   '${hadir + terlambat}',
-                      //   style: TextStyle(
-                      //     fontWeight: FontWeight.bold,
-                      //     fontSize: 24,
-                      //   ),
-                      // ),
-                    ],
-                  ))
-            ]),
-          ),
-        ],
+                        SizedBox(height: 4),
+                        // Text(
+                        //   '${hadir + terlambat}',
+                        //   style: TextStyle(
+                        //     fontWeight: FontWeight.bold,
+                        //     fontSize: 24,
+                        //   ),
+                        // ),
+                      ],
+                    ))
+              ]),
+            ),
+            TabelAbsensi()
+          ],
+        ),
       ),
     );
   }
