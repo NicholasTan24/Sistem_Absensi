@@ -25,6 +25,9 @@ class _DataKaryawanState extends State<DataKaryawan> {
         ),
       ),
       drawer: MyDrawerDK(),
+      body: Container(
+
+      ),
     );
   }
 }

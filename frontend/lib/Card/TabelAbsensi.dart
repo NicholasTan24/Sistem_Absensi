@@ -8,36 +8,48 @@ class TabelAbsensi extends StatefulWidget {
 }
 
 class _TabelAbsensiState extends State<TabelAbsensi> {
+  List<Map<String,String>> daftarAbsensi=[];
+
   @override
   Widget build(BuildContext context) {
+
     return Container(
-      margin: EdgeInsets.symmetric(horizontal: 150),
-      child: Card(
+      height: 400,
+      width: 1200,
+      decoration: BoxDecoration(
+          shape: BoxShape.rectangle, 
+          color: Colors.white,
+        borderRadius: BorderRadius.circular(20)
+      ),
+      child: Padding(
+        padding: EdgeInsets.symmetric(
+            horizontal: 50, vertical: 15),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 100, vertical: 5),
-              child: Row(
-                children: [
-                  Text('Tanggal'),
-                  SizedBox(width: 250),
-                  Text('Nama'),
-                  SizedBox(width: 250),
-                  Text('Waktu Masuk'),
-                  SizedBox(width: 250),
-                  Text('Status'),
-                ],
-              ),
+            Row(
+              children: [
+                Text('Tanggal'),
+                SizedBox(width: 270),
+                Text('Nama'),
+                SizedBox(width: 270),
+                Text('Waktu Masuk'),
+                SizedBox(width: 270),
+                Text('Status'),
+              ],
             ),
-            ClipRRect(
-              borderRadius: BorderRadius.circular(8),
-              child: Container(
-                height: 400,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.rectangle, color: Colors.white
-                  ),
-              ),
-            ),
+            SizedBox(height: 20),
+            Row(
+              children: [
+                Text('Tanggal'),
+                SizedBox(width: 270),
+                Text('Nama'),
+                SizedBox(width: 270),
+                Text('Waktu Masuk'),
+                SizedBox(width: 270),
+                Text('Status'),
+
+            ],),
           ],
         ),
       ),
