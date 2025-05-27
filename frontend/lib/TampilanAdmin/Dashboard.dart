@@ -43,7 +43,6 @@ class _DashboardState extends State<Dashboard> {
                 ),
               ]),
             ),
-            CardKehadiran(),
             SizedBox(height: 30),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 25, horizontal: 70),

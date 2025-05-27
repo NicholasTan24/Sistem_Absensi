@@ -9,7 +9,7 @@ class KaryawanRequest extends FormRequest
 
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     public function rules(): array
@@ -17,8 +17,9 @@ class KaryawanRequest extends FormRequest
         return [
             "id_karyawan" => "required",
             "nama_karyawan" => "required|max: 100",
-            "password" => "required|confirmed",
+            "password" => "required|confirmed|min:6",
             "email" => "required",
+            "nomor_telepon" => "required",
             "jabatan" => "required",
             "status" => "required"
         ];
