@@ -14,10 +14,10 @@ void main() {
     routes: {
       '/': (context) => Login(),
       '/dashboard': (context) => Dashboard(),
-      '/absmanual': (context) => AbsensiManualPage(),
-      '/data_karyawan': (context) => DataKaryawanPage(),
-      '/rekap_absensi': (context) => RekapAbsensi(),
-      '/register': (context) => RegisterPage(),
+      '/absmanual':(context) =>AbsensiManualPage(),
+      '/data_karyawan':(context)=> DataKaryawanPage(),
+      '/rekap_absensi':(context)=>RekapAbsensi(),
+      '/register':(context)=> RegisterPage(),
     },
   ));
 }

@@ -14,7 +14,7 @@ class KehadiranRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_karyawan' => 'required|exists:karyawan,id_karyawan',
+            'id_karyawan' => 'required|exists:users,id_karyawan',
             'tanggal' => 'required|date',
             'status' => 'required|in:hadir,izin,terlambat,tidak_hadir',
             'jam_masuk' => 'required|date_format:H:i',

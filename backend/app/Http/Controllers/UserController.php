@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 
-class KaryawanController extends Controller
+class UserController extends Controller
 {
     public function index(Request $request)
     {
@@ -47,7 +47,12 @@ class KaryawanController extends Controller
     public function store(UserRequest $request)
     {
         try {
-            $data = User::create($request->validated());
+            
+            $validated = $request->validated();
+
+            $validated['password'] = Hash::make($validated['password']);
+
+            $data = User::create($validated);
 
             return response()->json([
                 "status" => true,
@@ -134,23 +139,38 @@ class AdminController extends Controller
 {
     public function index()
     {
-        return response()->json(User::with('karyawan')->get(), 200);
+        return response()->json(User::with('users')->get(), 200);
     }
 
     public function store(UserRequest $request)
     {
-        $data = User::create($request->validated());
+       try {
+        $validated = $request->validated();
+
+        $validated['password'] = Hash::make($validated['password']);
+
+        $admin = User::create($validated);
 
         return response()->json([
             "status" => true,
-            "message" => "Admin created successfully",
-            "data" => $data
+            "status_code" => 201,
+            "message" => "Admin berhasil ditambahkan",
+            "data" => $admin
         ], 201);
+
+    } catch (\Exception $err) {
+        return response()->json([
+            "status" => false,
+            "status_code" => 500,
+            "message" => $err->getMessage(),
+            "data" => []
+        ], 500);
+    }
     }
 
     public function show($id)
     {
-        $admin = User::with('karyawan')->findOrFail($id);
+        $admin = User::with('users')->findOrFail($id);
         return response()->json($admin, 200);
     }
 

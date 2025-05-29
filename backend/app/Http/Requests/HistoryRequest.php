@@ -14,7 +14,7 @@ class HistoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_karyawan' => 'required|exists:karyawan,id_karyawan',
+            'id_karyawan' => 'required|exists:users,id_karyawan',
             'periode_awal' => 'required|date',
             'periode_akhir' => 'required|date|after_or_equal:periode_awal',
             'total_hadir' => 'required|integer|min:0',

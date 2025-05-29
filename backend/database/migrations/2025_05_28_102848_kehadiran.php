@@ -18,7 +18,7 @@ return new class extends Migration
             $table->date('tanggal');
             $table->datetime('jam_masuk')->nullable();
             $table->datetime('jam_pulang')->nullable();
-            $table->foreign('id_karyawan')->references('id_karyawan')->on('karyawan');
+            $table->foreign('id_karyawan')->references('id_karyawan')->on('users');
             $table->foreign('kode_qr')->references('kode_qr')->on('qr_code');
         });
     }

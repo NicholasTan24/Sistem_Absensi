@@ -11,7 +11,7 @@ class HistoryController extends Controller
     public function index()
     {
         try {
-            $data = History::with('karyawan')->latest()->get();
+            $data = History::with('users')->latest()->get();
 
             return response()->json([
                 'status' => true,
@@ -54,7 +54,7 @@ class HistoryController extends Controller
     public function show($id)
     {
         try {
-            $history = History::with('karyawan')->findOrFail($id);
+            $history = History::with('users')->findOrFail($id);
 
             return response()->json([
                 'status' => true,

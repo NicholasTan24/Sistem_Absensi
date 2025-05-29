@@ -17,9 +17,9 @@ return new class extends Migration
             $table->date('periode_awal');
             $table->date('periode_akhir');
             $table->integer('total_hadir');
-            $table->integer('total_alpha');
             $table->integer('total_izin');
-            $table->foreign('id_karyawan')->references('id_karyawan')->on('karyawan');
+            $table->integer('total_alpha');
+            $table->foreign('id_karyawan')->references('id_karyawan')->on('users');
         });
 
     }

@@ -12,11 +12,10 @@ return new class extends Migration {
             $table->string('nama_karyawan');
             $table->string('email')->unique();
             $table->string('nomor_telepon');
-            $table->string('kd_jabatan');
+            $table->unsignedInteger('kd_jabatan');
             $table->enum('status', ['aktif', 'nonaktif'])->default('aktif');
             $table->enum('role', ['admin', 'karyawan'])->default('karyawan');
             $table->string('password');
-            $table->rememberToken();
             $table->timestamps();
 
             $table->foreign('kd_jabatan')->references('kd_jabatan')->on('jabatan');

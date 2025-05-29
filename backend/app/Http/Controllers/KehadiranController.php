@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\KehadiranRequest;
 use App\Models\Kehadiran;
 use Illuminate\Http\Request;
 
@@ -9,24 +10,18 @@ class KehadiranController extends Controller
 {
     public function index()
     {
-        return response()->json(Kehadiran::with('karyawan')->get(), 200);
+        return response()->json(Kehadiran::with('users')->get(), 200);
     }
 
     public function today()
     {
         $today = now()->format('Y-m-d');
-        $data = Kehadiran::whereDate('tanggal', $today)->with('karyawan')->get();
+        $data = Kehadiran::whereDate('tanggal', $today)->with('users')->get();
         return response()->json($data, 200);
     }
 
-    public function store(Request $request)
+    public function store(KehadiranRequest $request)
     {
-        $request->validate([
-            'id_karyawan' => 'required|exists:karyawans,id',
-            'tanggal' => 'required|date',
-            'status' => 'required|in:hadir,izin,terlambat,tidak_hadir',
-            'waktu' => 'required',
-        ]);
 
         $data = Kehadiran::create($request->all());
 
