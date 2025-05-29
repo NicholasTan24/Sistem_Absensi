@@ -1,13 +1,12 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\KaryawanController;
-use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\QRCodeController;
 use App\Http\Controllers\KehadiranController;
 use App\Http\Controllers\HistoryController;
+
 
 // AUTH
 Route::post('/register', [AuthController::class, 'register']);
@@ -16,18 +15,18 @@ Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logo
 
 // KARYAWAN
 Route::middleware('auth:sanctum')->group(function () {
-    Route::get('/karyawan', [KaryawanController::class, 'index']);
-    Route::post('/karyawan', [KaryawanController::class, 'store']);
-    Route::get('/karyawan/{id}', [KaryawanController::class, 'show']);
-    Route::put('/karyawan/{id}', [KaryawanController::class, 'update']);
-    Route::delete('/karyawan/{id}', [KaryawanController::class, 'destroy']);
+    Route::get('/karyawan', [UserController::class, 'index']);
+    Route::post('/karyawan', [UserController::class, 'store']);
+    Route::get('/karyawan/{id}', [UserController::class, 'show']);
+    Route::put('/karyawan/{id}', [UserController::class, 'update']);
+    Route::delete('/karyawan/{id}', [UserController::class, 'destroy']);
 
     // ADMIN
-    Route::get('/admin', [AdminController::class, 'index']);
-    Route::post('/admin', [AdminController::class, 'store']);
-    Route::get('/admin/{id}', [AdminController::class, 'show']);
-    Route::put('/admin/{id}', [AdminController::class, 'update']);
-    Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
+    Route::get('/admin', [UserController::class, 'index']);
+    Route::post('/admin', [UserController::class, 'store']);
+    Route::get('/admin/{id}', [UserController::class, 'show']);
+    Route::put('/admin/{id}', [UserController::class, 'update']);
+    Route::delete('/admin/{id}', [UserController::class, 'destroy']);
 
     // QR CODE
     Route::prefix('qr-code')->group(function () {

@@ -15,20 +15,21 @@ class RegisterRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_karyawan' => ['required', 'regex:/^[0-9]+$/', 'unique:karyawan,id_karyawan'],
+            'id_karyawan' => ['required', 'regex:/^[0-9]+$/', 'unique:users,id_karyawan'],
             'nama_karyawan' => ['required', 'max:100'],
-            'email' => ['required', 'email:rfc,dns'],
+            'email' => 'required|email:rfc,dns|unique:users,email',
             'nomor_telepon' => ['required', 'regex:/^[0-9]+$/'],
-            'jabatan' => ['required'],
-            'status' => ['required'],
+            'kd_jabatan' => ['required'],
+            'status' => 'required|in:aktif,nonaktif',
             'password' => [
-                'required',
-                'string',
-                'min:8',
-                'regex:/[A-Z]/',
-                'regex:/[!@#$%^&*(),.?":{}|<>]/', // Wajib simbol
-                'confirmed'
+            'required',
+            'string',
+            'min:8',
+            'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).+$/',
+            'confirmed'
             ],
+
+            'role'=> 'required|in:admin,karyawan',
         ];
     }
 

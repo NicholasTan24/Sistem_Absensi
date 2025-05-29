@@ -15,7 +15,7 @@ class QRCodeRequest extends FormRequest
     {
         return [
             'kode_qr' => 'required|string|unique:qr_codes,kode_qr',
-            'waktu_habis' => 'required|datetime',
+            'waktu_habis' => 'required|date',
         ];
     }
 }

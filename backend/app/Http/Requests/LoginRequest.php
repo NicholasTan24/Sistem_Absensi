@@ -14,12 +14,12 @@ class LoginRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'id_karyawan' => [
+            'id_karyawan' => ['required', 'regex:/^[0-9]+$/', 'unique:users,id_karyawan'],
+            'password' => [
                 'required','string',
                 'min:8',
                 'regex:/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/'
             ],
-            'password' => ['required', 'string', 'min:8'],
         ];
     }
 
