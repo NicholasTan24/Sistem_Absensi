@@ -6,7 +6,7 @@ import 'Tampilan/TampilanAdmin/Data_Karyawan.dart';
 import 'Tampilan/TampilanAdmin/LoginRegister/Login.dart';
 import 'Tampilan/TampilanAdmin/LoginRegister/register.dart';
 import 'Tampilan/TampilanAdmin/Rekap_Absensi.dart';
-// import 'Tampilan/TampilanKaryawan/home.dart';
+import 'Tampilan/TampilanKaryawan/home.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
@@ -18,7 +18,7 @@ void main() async {
     initialRoute: '/',
     routes: {
       '/': (context) => const Login(),
-      // '/karyawan': (context) => const KaryawanPage(),
+      '/karyawan': (context) => const KaryawanPage(),
       '/dashboard': (context) => const Dashboard(),
       '/absmanual': (context) => const AbsensiManualPage(),
       '/data_karyawan': (context) => const DataKaryawanPage(),
