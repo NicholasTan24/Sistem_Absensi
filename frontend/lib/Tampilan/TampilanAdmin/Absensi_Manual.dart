@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Dummy/data.dart';
 import 'package:frontend/Dummy/kehadiran_dummy.dart';
+import 'package:frontend/drawer/drawer.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -103,56 +104,7 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Absensi Manual')),
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Center(
-                child: Text("Sistem Absensi",
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.dashboard),
-              title: const Text("Dashboard"),
-              onTap: () {
-                Navigator.pushReplacementNamed(context, '/dashboard');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.bar_chart),
-              title: const Text("Rekap Absensi"),
-              onTap: () {
-                Navigator.pushNamed(context, '/rekap_absensi');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.edit_calendar),
-              title: const Text("Absensi Manual"),
-              onTap: () {
-                Navigator.pushNamed(context, '/absmanual');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.people),
-              title: const Text("Data Karyawan"),
-              onTap: () {
-                Navigator.pushNamed(context,'/data_karyawan');
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("Logout"),
-              onTap: () {
-                Navigator.pushNamedAndRemoveUntil(context,'/',(route)=>false);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: MyDrawer(),
       body: Center(
         child: Container(
           padding: const EdgeInsets.all(16),

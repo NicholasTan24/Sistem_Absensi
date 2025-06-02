@@ -51,7 +51,6 @@ class _LoginState extends State<Login> {
       return;
     }
 
-    // Coba cari dari dummyKaryawan dulu
     Karyawan? user;
     try {
       user = dummyKaryawan.firstWhere(
@@ -63,12 +62,18 @@ class _LoginState extends State<Login> {
     }
 
     if (user != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString('idKaryawan', user.idKaryawan);
+      await prefs.setString('namaKaryawan', user.namaKaryawan);
+      await prefs.setString('email', user.email);
+      await prefs.setString('nomorTelepon', user.nomorTelepon);
+      await prefs.setString('jabatan', user.jabatan);
       print('Login sukses dari dummy sebagai ${user.namaKaryawan}');
       _navigateBasedOnRole(user.jabatan);
       return;
     }
 
-    // Coba cek dari SharedPreferences
+    // Cek dari SharedPreferences
     final prefs = await SharedPreferences.getInstance();
     final savedId = prefs.getString('idKaryawan');
     final savedEncryptedPassword = prefs.getString('password');
@@ -88,13 +93,20 @@ class _LoginState extends State<Login> {
           final nama = encrypter
               .decrypt64(prefs.getString('namaKaryawan') ?? '', iv: iv);
           final jabatan = prefs.getString('jabatan') ?? 'karyawan';
+          final email = prefs.getString('email') ?? '-';
+          final noTelepon = prefs.getString('nomorTelepon') ?? '-';
 
-          print('Login sukses dari SharedPreferences sebagai $nama');
+          await prefs.setString('idKaryawan', savedId ?? '-');
+          await prefs.setString('namaKaryawan', nama);
+          await prefs.setString('email', email);
+          await prefs.setString('nomorTelepon', noTelepon);
+          await prefs.setString('jabatan', jabatan);
+
+          print('Login sukses sebagai $nama');
           _navigateBasedOnRole(jabatan);
           return;
         }
       } catch (e) {
-        // error saat dekripsi atau cocokkan password
       }
     }
 
