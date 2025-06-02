@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:frontend/Dummy/data.dart';
 import 'package:frontend/Tampilan/TampilanAdmin/Edit.dart';
-import 'package:frontend/drawer/drawer.dart';
+import 'package:frontend/drawer/Admindrawer.dart';
 
 class DataKaryawanPage extends StatefulWidget {
   const DataKaryawanPage({super.key});

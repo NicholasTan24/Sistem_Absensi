@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:frontend/drawer/KaryawanDrawer.dart';
 import 'package:qr_code_scanner_plus/qr_code_scanner_plus.dart';
 
 class KaryawanPage extends StatefulWidget {
@@ -27,36 +28,7 @@ class _KaryawanPageState extends State<KaryawanPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: Drawer(
-        child: ListView(
-          padding: EdgeInsets.zero,
-          children: [
-            const DrawerHeader(
-              decoration: BoxDecoration(color: Colors.blue),
-              child: Center(
-                child: Text("Sistem Absensi",
-                    style: TextStyle(color: Colors.white, fontSize: 20)),
-              ),
-            ),
-            ListTile(
-              leading: const Icon(Icons.qr_code_scanner),
-              title: const Text("Presensi"),
-              onTap: () {
-                Navigator.pushNamed(context, '/home');
-              },
-            ),
-            const Divider(),
-            ListTile(
-              leading: const Icon(Icons.logout),
-              title: const Text("Logout"),
-              onTap: () {
-                Navigator.pushNamedAndRemoveUntil(
-                    context, '/', (route) => false);
-              },
-            ),
-          ],
-        ),
-      ),
+      drawer: KaryawanDrawer(),
       appBar: AppBar(title: const Text("Presensi Kehadiran")),
       body: Column(
         children: <Widget>[
