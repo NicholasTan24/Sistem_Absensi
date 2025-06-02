@@ -22,7 +22,7 @@ class UserRequest extends FormRequest
             "nomor_telepon" => "required",
             "jabatan" => "required",
             "status" => "required",
-            "is_admin"=>"required"
+            "role" => "required|in:admin,karyawan",
         ];
     }
 }

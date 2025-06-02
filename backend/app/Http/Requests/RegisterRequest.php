@@ -17,9 +17,9 @@ class RegisterRequest extends FormRequest
         return [
             'id_karyawan' => ['required', 'regex:/^[0-9]+$/', 'unique:users,id_karyawan'],
             'nama_karyawan' => ['required', 'max:100'],
-            'email' => 'required|email:rfc,dns|unique:users,email',
+            'email' => 'required|unique:users,email',
             'nomor_telepon' => ['required', 'regex:/^[0-9]+$/'],
-            'kd_jabatan' => ['required'],
+            'kd_jabatan' => 'required|exists:jabatan,kd_jabatan',
             'status' => 'required|in:aktif,nonaktif',
             'password' => [
             'required',
