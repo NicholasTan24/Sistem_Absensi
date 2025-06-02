@@ -61,7 +61,7 @@ class QRCodeController extends Controller
         ]);
     }
 
-    // Untuk ambil QR Code aktif hari ini
+
     public function aktifHariIni()
     {
         $qrCode = qr_code::whereDate('waktu_habis', now()->toDateString())->first();

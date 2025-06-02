@@ -30,13 +30,18 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.13.6
-  intl: ^0.18.1
+  
 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
+  http: ^0.13.6
+  intl: ^0.18.1
+  encrypt: ^5.0.3
+  shared_preferences: ^2.5.3
+  qr_code_scanner_plus: ^2.0.10+1
+  image_picker: ^1.1.2
 
 dev_dependencies:
   flutter_test:

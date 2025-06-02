@@ -89,7 +89,6 @@ class UserController extends Controller
 
         $karyawan = User::findOrFail($id);
 
-        // Jika ada password, encrypt dan simpan
         if (!empty($request->password)) {
             $data['password'] = Hash::make($request->password);
         } else {
