@@ -89,7 +89,7 @@ final List<Karyawan> dummyKaryawan = [
     email: "lina@example.com",
     nomorTelepon: "081112223333",
     jabatan: "Sales",
-    status: "tidak aktif",
+    status: "aktif",
     password: "Lina!2024",
   ),
 
