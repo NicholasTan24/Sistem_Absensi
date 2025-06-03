@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-
 import '../../Dummy/kehadiran_dummy.dart';
 import '../../drawer/Admindrawer.dart';
 
@@ -23,45 +22,41 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   late Animation<int> _izinAnim;
   late Animation<int> _alphaAnim;
 
+  int hadir = 0;
+  int izin = 0;
+  int alpha = 0;
+
   @override
   void initState() {
     super.initState();
+    _hitungStatusAbsensi();
     _setupAnimations();
   }
 
-
+  void _hitungStatusAbsensi() {
+    hadir = absensiHariIni.where((a) => a["status"] == "Hadir").length;
+    izin = absensiHariIni.where((a) => a["status"] == "Izin").length;
+    alpha = semuaKaryawan.length - hadir - izin;
+  }
 
   void _setupAnimations() {
-    int hadir = getJumlah("Hadir");
-    int izin = getJumlah("Izin");
-    int alpha = semuaKaryawan.length - hadir - izin;
-
-    _hadirController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800));
-    _izinController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800));
-    _alphaController = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 800));
+    _hadirController = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    _izinController = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
+    _alphaController = AnimationController(vsync: this, duration: const Duration(milliseconds: 800));
 
     _hadirAnim = IntTween(begin: 0, end: hadir).animate(_hadirController);
     _izinAnim = IntTween(begin: 0, end: izin).animate(_izinController);
-    _alphaAnim = IntTween(begin: semuaKaryawan.length, end: alpha)
-        .animate(_alphaController);
+    _alphaAnim = IntTween(begin: semuaKaryawan.length, end: alpha).animate(_alphaController);
 
     _hadirController.forward();
     _izinController.forward();
     _alphaController.forward();
   }
 
-  int getJumlah(String status) =>
-      dummyData().absensiHariIni.where((a) => a["status"] == status).length;
-
   void showQRCodeDialog() {
     final tanggal = DateFormat('yyyy-MM-dd').format(DateTime.now());
-    final expired = DateFormat('HH:mm')
-        .format(DateTime.now().copyWith(hour: 23, minute: 59));
-    final qrUrl =
-        'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=absensi-$tanggal';
+    final expired = DateFormat('HH:mm').format(DateTime.now().copyWith(hour: 23, minute: 59));
+    final qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=absensi-$tanggal';
 
     showDialog(
       context: context,
@@ -96,6 +91,8 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+    final dataScan = absensiHariIni.where((a) => a['status'] == 'Hadir').toList();
+
     return Scaffold(
       drawer: MyDrawer(),
       appBar: AppBar(
@@ -120,7 +117,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
           const SizedBox(height: 40),
           const Text("Data Scan Hari Ini",
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-          const SizedBox(height: 35),
+          const SizedBox(height: 20),
           Expanded(
             child: Card(
               elevation: 3,
@@ -130,43 +127,27 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Row(
                       children: [
-                        Expanded(
-                            flex: 3,
-                            child: Text("Tanggal",
-                                style: TextStyle(fontWeight: FontWeight.bold))),
-                        Expanded(
-                            flex: 3,
-                            child: Text("Nama Karyawan",
-                                style: TextStyle(fontWeight: FontWeight.bold))),
-                        Expanded(
-                            flex: 2,
-                            child: Text("Status",
-                                style: TextStyle(fontWeight: FontWeight.bold))),
+                        Expanded(flex: 3, child: Text("Tanggal", style: TextStyle(fontWeight: FontWeight.bold))),
+                        Expanded(flex: 3, child: Text("Nama Karyawan", style: TextStyle(fontWeight: FontWeight.bold))),
+                        Expanded(flex: 2, child: Text("Status", style: TextStyle(fontWeight: FontWeight.bold))),
                       ],
                     ),
                     const Divider(thickness: 1),
-
-                    // Isi data
-                    ...absensiHariIni.map((data) {
+                    ...dataScan.map((data) {
                       return Padding(
                         padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: Row(
                           children: [
-                            Expanded(
-                                flex: 3, child: Text(data["tanggal"] ?? "-")),
-                            Expanded(
-                                flex: 3,
-                                child: Text(data["namaKaryawan"] ?? "-")),
-                            Expanded(
-                                flex: 2, child: Text(data["status"] ?? "-")),
+                            Expanded(flex: 3, child: Text(data["tanggal"] ?? "-")),
+                            Expanded(flex: 3, child: Text(data["namaKaryawan"] ?? "-")),
+                            Expanded(flex: 2, child: Text(data["status"] ?? "-")),
                           ],
                         ),
                       );
-                    }),
+                    }).toList(),
                   ],
                 ),
               ),
@@ -191,14 +172,10 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(title,
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          color: color)),
+                      style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color)),
                   const SizedBox(height: 8),
                   Text("${animation.value} orang",
-                      style: const TextStyle(
-                          fontSize: 24, fontWeight: FontWeight.bold)),
+                      style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
                 ],
               ),
             ),

@@ -18,6 +18,7 @@ class _EditPageState extends State<EditPage> {
   final _emailController = TextEditingController();
   final _teleponController = TextEditingController();
   final _jabatanController = TextEditingController();
+  final _statusController = TextEditingController();
 
   @override
   void dispose() {
@@ -25,6 +26,7 @@ class _EditPageState extends State<EditPage> {
     _emailController.dispose();
     _teleponController.dispose();
     _jabatanController.dispose();
+    _statusController.dispose();
     super.dispose();
   }
 
@@ -53,6 +55,7 @@ class _EditPageState extends State<EditPage> {
                     _emailController.text = value.email;
                     _teleponController.text = value.nomorTelepon;
                     _jabatanController.text = value.jabatan;
+                    _statusController.text = value.status;
                   });
                 }
               },
@@ -88,6 +91,19 @@ class _EditPageState extends State<EditPage> {
               },
               decoration: const InputDecoration(labelText: 'Jabatan'),
             ),
+            DropdownButtonFormField(
+                items: [
+                  DropdownMenuItem(value: 'aktif',child: Text('aktif')),
+                  DropdownMenuItem(value: 'tidak aktif',child: Text('tidak aktif'))
+                ],
+                onChanged: (value){
+                  setState(() {
+                    _statusController.text = value ?? '';
+                  }
+                  );
+                },
+                decoration: const InputDecoration(labelText: 'Status'),
+                ),
           ],
         ),
       ),
@@ -104,6 +120,7 @@ class _EditPageState extends State<EditPage> {
                 selectedKaryawan!.email = _emailController.text;
                 selectedKaryawan!.nomorTelepon = _teleponController.text;
                 selectedKaryawan!.jabatan = _jabatanController.text;
+                selectedKaryawan!.status = _statusController.text;
               });
               widget.onUpdated();
               Navigator.pop(context);
