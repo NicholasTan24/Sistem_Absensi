@@ -1,13 +1,7 @@
 import 'package:intl/intl.dart';
 
 class dummyData {
-  void tambahAbsensi(String nama, String status) {
-    absensiHariIni.add({
-      "tanggal": DateFormat('yyyy-MM-dd').format(DateTime.now()),
-      "namaKaryawan": nama,
-      "status": status,
-    });
-  }
+
   List<Map<String, dynamic>> absensiHariIni = [
     {
       "idKaryawan": "001",
@@ -26,20 +20,7 @@ class dummyData {
       "namaKaryawan": "Rudi Hartono",
       "status": "Hadir",
       "tanggal": DateFormat('yyyy-MM-dd').format(DateTime.now())
-    },
-    {
-      "idKaryawan": "004",
-      "namaKaryawan": "Siti Aisyah",
-      "status": "Izin",
-      "tanggal": DateFormat('yyyy-MM-dd').format(DateTime.now())
-    },
-    {
-      "idKaryawan": "005",
-      "namaKaryawan": "Budi Prasetyo",
-      "status": "Izin",
-      "tanggal": DateFormat('yyyy-MM-dd').format(DateTime.now())
     }
-
 
   ];
   final List<Map<String, dynamic>> semuaKaryawan = [

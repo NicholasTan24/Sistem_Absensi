@@ -32,6 +32,9 @@ class _LoginState extends State<Login> {
     if (idKaryawan.isEmpty) {
       _idError = 'ID tidak boleh kosong';
       hasError = true;
+    }else if (!RegExp(r'^\d+$').hasMatch(idKaryawan)) {
+      _idError = 'ID harus berupa angka';
+      hasError = true;
     }
 
     if (password.isEmpty) {
@@ -73,7 +76,6 @@ class _LoginState extends State<Login> {
       return;
     }
 
-    // Cek dari SharedPreferences
     final prefs = await SharedPreferences.getInstance();
     final savedId = prefs.getString('idKaryawan');
     final savedEncryptedPassword = prefs.getString('password');
@@ -131,22 +133,22 @@ class _LoginState extends State<Login> {
       body: Center(
         child: SizedBox(
           width: 350,
-          height: 470,
+          height: 360,
           child: Card(
             elevation: 10,
             child: Column(
               children: [
                 const Padding(
-                  padding: EdgeInsets.all(23),
+                  padding: EdgeInsets.symmetric(vertical: 13),
                   child: Text('Login',
                       textAlign: TextAlign.center,
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
                 ),
                 const Divider(thickness: 2, color: Colors.black),
-                const SizedBox(height: 10),
+                const SizedBox(height: 4),
                 Padding(
-                  padding: const EdgeInsets.all(15),
+                  padding: const EdgeInsets.all(8),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -159,7 +161,7 @@ class _LoginState extends State<Login> {
                           errorText: _idError,
                         ),
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 15),
                       TextField(
                         controller: _passwordController,
                         obscureText: _obscurePassword,

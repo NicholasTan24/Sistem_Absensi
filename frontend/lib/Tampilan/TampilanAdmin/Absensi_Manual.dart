@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend/Dummy/data.dart';
 import 'package:frontend/Dummy/kehadiran_dummy.dart';
 import 'package:frontend/drawer/Admindrawer.dart';
 import 'package:intl/intl.dart';
@@ -15,15 +14,15 @@ class AbsensiManualPage extends StatefulWidget {
 class _AbsensiManualPageState extends State<AbsensiManualPage> {
   late List<String> selectedStatus;
   late List<TextEditingController> keteranganControllers;
+  final String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
 
-  @override
   @override
   void initState() {
     super.initState();
     _loadSelectedStatus();
   }
 
-  void _loadSelectedStatus() async {
+  Future<void> _loadSelectedStatus() async {
     final prefs = await SharedPreferences.getInstance();
 
     List<String> tempStatus = [];
@@ -40,22 +39,24 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
       String status;
       String keterangan;
 
-      if (existing != null) {
+      if (existing.isNotEmpty) {
         status = existing['status'] ?? 'Alpha';
         keterangan = existing['keterangan'] ?? '';
       } else {
-        status = prefs.getString('status_$id') ?? 'Alpha';
-        keterangan = prefs.getString('keterangan_$id') ?? '';
+        status = prefs.getString('status_${id}_$today') ?? 'Alpha';
+        keterangan = prefs.getString('keterangan_${id}_$today') ?? '';
       }
 
       tempStatus.add(status);
       tempControllers.add(TextEditingController(text: keterangan));
     }
 
-    setState(() {
-      selectedStatus = tempStatus;
-      keteranganControllers = tempControllers;
-    });
+    if (mounted) {
+      setState(() {
+        selectedStatus = tempStatus;
+        keteranganControllers = tempControllers;
+      });
+    }
   }
 
   @override
@@ -76,10 +77,10 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
 
       final newAbsensi = {
         'idKaryawan': id,
-        'nama': dummyData().semuaKaryawan[i]['nama_karyawan'],
+        'namaKaryawan': dummyData().semuaKaryawan[i]['nama_karyawan'],
         'status': selectedStatus[i],
         'waktu': DateFormat('HH:mm').format(DateTime.now()),
-        'tanggal': DateFormat('yyyy-MM-dd').format(DateTime.now()),
+        'tanggal': today,
         'keterangan': keteranganControllers[i].text,
       };
 
@@ -89,19 +90,25 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
         dummyData().absensiHariIni.add(newAbsensi);
       }
 
-      await prefs.setString('status_${id}', selectedStatus[i]);
-      await prefs.setString('keterangan_$id', keteranganControllers[i].text);
+      await prefs.setString('status_${id}_$today', selectedStatus[i]);
+      await prefs.setString('keterangan_${id}_$today', keteranganControllers[i].text);
     }
 
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Absensi berhasil disimpan')),
-    );
+    if (mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Absensi berhasil disimpan')),
+      );
+    }
   }
-
-
 
   @override
   Widget build(BuildContext context) {
+    if (selectedStatus.isEmpty || keteranganControllers.isEmpty) {
+      return const Scaffold(
+        body: Center(child: CircularProgressIndicator()),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(title: const Text('Absensi Manual')),
       drawer: MyDrawer(),
@@ -131,18 +138,30 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                       DataColumn(label: Text('Keterangan')),
                     ],
                     rows: List.generate(dummyData().semuaKaryawan.length, (index) {
+                      final karyawan = dummyData().semuaKaryawan[index];
+                      final id = karyawan['id_karyawan'];
+
+                      final sudahScan = dummyData().absensiHariIni.any(
+                            (a) =>
+                        a['idKaryawan'] == id &&
+                            a['status'] == 'Hadir',
+                      );
+
                       return DataRow(cells: [
                         DataCell(Text('${index + 1}')),
-                        DataCell(Text(dummyData().semuaKaryawan[index]['nama_karyawan'])),
+                        DataCell(Text(karyawan['nama_karyawan'])),
                         DataCell(Row(
                           mainAxisSize: MainAxisSize.min,
                           children: ['Hadir', 'Izin', 'Alpha'].map((status) {
                             return Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Radio<String>(
                                   value: status,
                                   groupValue: selectedStatus[index],
-                                  onChanged: (value) {
+                                  onChanged: sudahScan
+                                      ? null
+                                      : (value) {
                                     setState(() {
                                       selectedStatus[index] = value!;
                                     });
@@ -161,8 +180,7 @@ class _AbsensiManualPageState extends State<AbsensiManualPage> {
                               decoration: const InputDecoration(
                                 hintText: 'Isi Keterangan...',
                                 border: OutlineInputBorder(),
-                                contentPadding:
-                                EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                                contentPadding: EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                               ),
                             ),
                           ),
