@@ -23,13 +23,10 @@ class _RegisterPageState extends State<RegisterPage> {
   final List<String> jabatanList = ['Admin', 'Staf Gudang', 'Sales', 'Kasir'];
 
   bool isPasswordStrong(String password) {
-    final RegExp upper = RegExp(r'[A-Z]');
-    final RegExp lower = RegExp(r'[a-z]');
-    final RegExp symbol = RegExp(r'[!@#\$%^&*(),.?":{}|<>]');
     return password.length >= 8 &&
-        upper.hasMatch(password) &&
-        lower.hasMatch(password) &&
-        symbol.hasMatch(password);
+        RegExp(r'[A-Z]').hasMatch(password) &&
+        RegExp(r'[a-z]').hasMatch(password) &&
+        RegExp(r'[!@#\$%^&*(),.?":{}|<>]').hasMatch(password);
   }
 
   void _register() async {
@@ -68,20 +65,12 @@ class _RegisterPageState extends State<RegisterPage> {
     Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Register Karyawan'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pushNamedAndRemoveUntil(
-              context, '/', (route) => false),
-        ),
-      ),
+      appBar: AppBar(title: const Text('Register Karyawan')),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Form(
           key: _formKey,
           child: ListView(
@@ -90,75 +79,59 @@ class _RegisterPageState extends State<RegisterPage> {
                 controller: idController,
                 decoration: const InputDecoration(labelText: 'ID Karyawan'),
                 keyboardType: TextInputType.number,
-                validator: (value) =>
-                (value == null || value.isEmpty || !RegExp(r'^\d+$').hasMatch(value))
-                    ? 'ID hanya boleh angka dan wajib diisi'
-                    : null,
+                validator: (value) {
+                  if (value == null || value.isEmpty || !RegExp(r'^\d+$').hasMatch(value)) {
+                    return 'ID wajib angka dan tidak boleh kosong';
+                  }
+                  return null;
+                },
               ),
-              const SizedBox(height: 16),
               TextFormField(
                 controller: namaController,
                 decoration: const InputDecoration(labelText: 'Nama Lengkap'),
                 validator: (value) =>
-                (value == null || value.isEmpty) ? 'Wajib diisi' : null,
+                value == null || value.isEmpty ? 'Wajib diisi' : null,
               ),
-              const SizedBox(height: 16),
               TextFormField(
                 controller: emailController,
                 decoration: const InputDecoration(labelText: 'Email'),
-                keyboardType: TextInputType.emailAddress,
                 validator: (value) =>
-                (value == null || !RegExp(r'^[^@]+@[^@]+\.[^@]+').hasMatch(value))
-                    ? 'Format email tidak valid'
-                    : null,
+                value == null || !value.contains('@') ? 'Email tidak valid' : null,
               ),
-              const SizedBox(height: 16),
               TextFormField(
                 controller: passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
                   labelText: 'Password',
                   suffixIcon: IconButton(
-                    icon: Icon(_obscurePassword
-                        ? Icons.visibility_off
-                        : Icons.visibility),
-                    onPressed: () =>
-                        setState(() => _obscurePassword = !_obscurePassword),
+                    icon: Icon(_obscurePassword ? Icons.visibility_off : Icons.visibility),
+                    onPressed: () => setState(() => _obscurePassword = !_obscurePassword),
                   ),
                 ),
                 validator: (value) {
                   if (value == null || value.isEmpty) return 'Wajib diisi';
                   if (!isPasswordStrong(value)) {
-                    return 'Gunakan huruf besar, kecil & simbol. Min 8 karakter';
+                    return 'Minimal 8 karakter, huruf besar, kecil & simbol';
                   }
                   return null;
                 },
               ),
-              const SizedBox(height: 16),
               TextFormField(
                 controller: telpController,
                 decoration: const InputDecoration(labelText: 'Nomor Telepon'),
                 keyboardType: TextInputType.phone,
                 validator: (value) =>
-                (value == null || !RegExp(r'^\d+$').hasMatch(value))
-                    ? 'Nomor hanya boleh angka'
+                value == null || !RegExp(r'^\d+$').hasMatch(value)
+                    ? 'Nomor hanya angka'
                     : null,
               ),
-              const SizedBox(height: 16),
               DropdownButtonFormField<String>(
                 value: selectedJabatan,
                 decoration: const InputDecoration(labelText: 'Jabatan'),
-                items: jabatanList
-                    .map((jab) => DropdownMenuItem(
-                  value: jab,
-                  child: Text(jab),
-                ))
-                    .toList(),
+                items: jabatanList.map((jab) => DropdownMenuItem(value: jab, child: Text(jab))).toList(),
                 onChanged: (val) => setState(() => selectedJabatan = val),
-                validator: (val) =>
-                val == null ? 'Pilih salah satu jabatan' : null,
+                validator: (val) => val == null ? 'Pilih jabatan' : null,
               ),
-              const SizedBox(height: 16),
               SwitchListTile(
                 title: const Text("Status Aktif"),
                 value: status,

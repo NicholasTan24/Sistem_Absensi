@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../Dummy/kehadiran_dummy.dart';
 import '../../drawer/Admindrawer.dart';
 
@@ -29,14 +30,34 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    _hitungStatusAbsensi();
-    _setupAnimations();
+    _hitungStatusAbsensiManual().then((_) => _setupAnimations());
   }
 
-  void _hitungStatusAbsensi() {
-    hadir = absensiHariIni.where((a) => a["status"] == "Hadir").length;
-    izin = absensiHariIni.where((a) => a["status"] == "Izin").length;
-    alpha = semuaKaryawan.length - hadir - izin;
+  Future<void> _hitungStatusAbsensiManual() async {
+    final prefs = await SharedPreferences.getInstance();
+    int countHadir = 0;
+    int countIzin = 0;
+
+    for (var karyawan in semuaKaryawan) {
+      final id = karyawan['id_karyawan'];
+      final status = dummyData()
+          .absensiHariIni
+          .firstWhere((a) => a['idKaryawan'] == id, orElse: () => {})['status'] ??
+          prefs.getString('status_$id') ??
+          'Alpha';
+
+      if (status == 'Hadir') {
+        countHadir++;
+      } else if (status == 'Izin') {
+        countIzin++;
+      }
+    }
+
+    setState(() {
+      hadir = countHadir;
+      izin = countIzin;
+      alpha = semuaKaryawan.length - hadir - izin;
+    });
   }
 
   void _setupAnimations() {
@@ -142,7 +163,7 @@ class _DashboardState extends State<Dashboard> with TickerProviderStateMixin {
                         child: Row(
                           children: [
                             Expanded(flex: 3, child: Text(data["tanggal"] ?? "-")),
-                            Expanded(flex: 3, child: Text(data["namaKaryawan"] ?? "-")),
+                            Expanded(flex: 3, child: Text(data["namaKaryawan"] ?? data["nama"] ?? "-")),
                             Expanded(flex: 2, child: Text(data["status"] ?? "-")),
                           ],
                         ),

@@ -1,5 +1,7 @@
-import 'dummy_data.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'dummy_data.dart';
+import 'package:encrypt/encrypt.dart'as encrypt;
 
 final List<Karyawan> dummyKaryawan = [
   Karyawan(
@@ -94,3 +96,41 @@ final List<Karyawan> dummyKaryawan = [
   ),
 
 ];
+
+Future<List<Karyawan>> loadKaryawanFromPrefs() async {
+  final prefs = await SharedPreferences.getInstance();
+  final id = prefs.getString('idKaryawan');
+  final nama = prefs.getString('namaKaryawan');
+  final email = prefs.getString('email');
+  final telp = prefs.getString('nomorTelepon');
+  final jabatan = prefs.getString('jabatan');
+  final status = prefs.getString('status');
+  final password = prefs.getString('password');
+  final keyStr = prefs.getString('key');
+  final ivStr = prefs.getString('iv');
+
+  if ([id, nama, email, telp, jabatan, status, password, keyStr, ivStr].contains(null)) {
+    return dummyKaryawan;
+  }
+
+  final key = encrypt.Key.fromBase64(keyStr!);
+  final iv = encrypt.IV.fromBase64(ivStr!);
+  final encrypter = encrypt.Encrypter(encrypt.AES(key));
+
+  final decryptedNama = encrypter.decrypt64(nama!, iv: iv);
+  final decryptedPassword = encrypter.decrypt64(password!, iv: iv);
+
+  final newKaryawan = Karyawan(
+    idKaryawan: id!,
+    namaKaryawan: decryptedNama,
+    email: email!,
+    nomorTelepon: telp!,
+    jabatan: jabatan!,
+    status: status!,
+    password: decryptedPassword,
+  );
+
+  final isExist = dummyKaryawan.any((k) => k.idKaryawan == id);
+  return isExist ? dummyKaryawan : [...dummyKaryawan, newKaryawan];
+
+}

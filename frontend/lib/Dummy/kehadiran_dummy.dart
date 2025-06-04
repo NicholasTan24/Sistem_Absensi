@@ -3,25 +3,6 @@ import 'package:intl/intl.dart';
 class dummyData {
 
   List<Map<String, dynamic>> absensiHariIni = [
-    {
-      "idKaryawan": "001",
-      "namaKaryawan": "Agus Santoso",
-      "status": "Hadir",
-      "tanggal": DateFormat('yyyy-MM-dd').format(DateTime.now())
-    },
-    {
-      "idKaryawan": "002",
-      "namaKaryawan": "Dina Rahma",
-      "status": "Hadir",
-      "tanggal": DateFormat('yyyy-MM-dd').format(DateTime.now())
-    },
-    {
-      "idKaryawan": "003",
-      "namaKaryawan": "Rudi Hartono",
-      "status": "Hadir",
-      "tanggal": DateFormat('yyyy-MM-dd').format(DateTime.now())
-    }
-
   ];
   final List<Map<String, dynamic>> semuaKaryawan = [
     {

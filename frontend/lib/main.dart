@@ -13,8 +13,6 @@ import 'Tampilan/TampilanKaryawan/home.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await initializeDateFormatting('id_ID', null);
-
-  // Minta izin kamera sebelum aplikasi berjalan
   await _requestPermissions();
 
   runApp(MaterialApp(

@@ -48,7 +48,6 @@ class _RekapAbsensiPageState extends State<RekapAbsensiPage> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Bulan & Tahun
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8),
             child: Row(
@@ -108,7 +107,6 @@ class _RekapAbsensiPageState extends State<RekapAbsensiPage> {
             ),
           ),
           const SizedBox(height: 10),
-          // Rekap Tabel
           Expanded(
             child: SingleChildScrollView(
               scrollDirection: Axis.horizontal,
@@ -120,7 +118,6 @@ class _RekapAbsensiPageState extends State<RekapAbsensiPage> {
                     defaultColumnWidth: const IntrinsicColumnWidth(),
                     border: TableBorder.all(color: Colors.black26),
                     children: [
-                      // Header
                       TableRow(children: [
                         const TableCell(
                           child: Center(child: Text("No")),
@@ -145,7 +142,6 @@ class _RekapAbsensiPageState extends State<RekapAbsensiPage> {
                           ),
                         )),
                       ]),
-                      // Data Karyawan
                       ...List.generate(dummyKaryawan.length, (index) {
                         final karyawan = dummyKaryawan[index];
                         return TableRow(children: [
